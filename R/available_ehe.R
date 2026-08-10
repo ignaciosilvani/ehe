@@ -59,4 +59,3 @@ available_ehe <- function(encuesta = NULL,
 
 }
 
-#devtools::load_all()
