@@ -72,6 +72,7 @@ get_ehe <- function(encuesta = "EHE-M",
 
   datos <- readr::read_csv(
     archivo,
+    guess_max = Inf,
     show_col_types = FALSE
   )
 
