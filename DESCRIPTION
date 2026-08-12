@@ -1,18 +1,32 @@
 Package: ehe
-Title: What the Package Does (One Line, Title Case)
+Title: Tools for the Buenos Aires Household and Employment Survey
 Version: 0.0.0.9000
-Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Authors@R: person("Ignacio", "Silvani", email = "silvaniignacio@gmail.com", role = c("aut", "cre"))
+Description: Tools to access, download, and manipulate microdata Household and Employment
+    Survey of the Province of Buenos Aires, Argentina (EHE is the Spanish
+    acronym for Household and Employment Survey). The package provides
+    functions to query the official open data catalog, identify available EHE
+    surveys, download and read microdata, work with variable dictionaries and
+    labels, and produce weighted univariate and bivariate tabulations using
+    the survey expansion factors. It also provides functions to calculate and
+    consult labor market rates and indicators, income and inequality
+    indicators, and other statistics derived from the EHE.
+License: MIT + file LICENSE
 Encoding: UTF-8
+Language: es
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
-Imports: 
+URL: https://github.com/ignaciosilvani/ehe
+BugReports: https://github.com/ignaciosilvani/ehe/issues
+Imports:
     dplyr,
     httr2,
     jsonlite,
     purrr,
+    readr,
+    readxl,
+    rlang,
     stringr,
-    tibble
+    tibble,
+    tidyr
+
