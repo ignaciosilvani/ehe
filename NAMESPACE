@@ -3,6 +3,7 @@
 export(available_ehe)
 export(ehe_dictionary)
 export(ehe_labels)
+export(ehe_laboral)
 export(ehe_metadata)
 export(ehe_tabulate)
 export(get_ehe)

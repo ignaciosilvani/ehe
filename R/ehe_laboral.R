@@ -11,16 +11,40 @@
 #' - sexo y grupo de edad;
 #' - jefes/as de hogar.
 #'
-#' @param base Base de datos EHE.
-#' @param weights Variable de ponderación. Por defecto, `"ponduni"`.
+#' @param base Base de datos individual de la EHE.
+#' @param weights Nombre de la variable que contiene el factor de
+#'   expansión de la encuesta. Por defecto, `"ponduni"`.
 #'
-#' @return Un tibble con las columnas:
-#' `indicador`, `desagregacion`, `categoria` y `porcentaje`.
+#' @return Un tibble con los principales indicadores del mercado laboral,
+#'   incluyendo tasas de actividad y subocupación.
 #'
-#' @export
+#' @details
+#' La función calcula los siguientes indicadores:
+#'
+#' \itemize{
+#'   \item Tasa de actividad de la población de 14 años y más.
+#'   \item Tasa de actividad por sexo.
+#'   \item Tasa de actividad por grupo de edad.
+#'   \item Tasa de actividad por sexo y grupo de edad.
+#'   \item Tasa de actividad de los jefes de hogar.
+#'   \item Tasa de subocupación.
+#' }
+#'
+#' Los grupos etarios utilizados son:
+#'
+#' \itemize{
+#'   \item De 14 a 29 años.
+#'   \item De 30 a 64 años.
+#'   \item 65 años y más.
+#' }
+#'
+#' Aunque el tercer grupo se construye para los cálculos internos,
+#' no se presenta en los indicadores de actividad por grupo de edad
+#' ni en los indicadores combinados de sexo y edad.
 #'
 #' @examples
 #' \dontrun{
+#' # Obtener una base individual de la EHE
 #' base <- get_ehe(
 #'   encuesta = "EHE-M",
 #'   anio = 2024,
@@ -28,8 +52,15 @@
 #'   localidad = "Alberti"
 #' )
 #'
-#' ehe_laboral(base)
+#' # Calcular los indicadores del mercado laboral
+#' ehe_laboral(
+#'   base = base,
+#'   weights = "ponduni"
+#' )
 #' }
+#'
+#'
+#' @export
 #'
 ehe_laboral <- function(
   base,

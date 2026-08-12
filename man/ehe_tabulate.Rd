@@ -4,7 +4,14 @@
 \alias{ehe_tabulate}
 \title{Tabulados ponderados de EHE}
 \usage{
-ehe_tabulate(base, x, y = NULL, weights = NULL, add.totals = NULL)
+ehe_tabulate(
+  base,
+  x,
+  y = NULL,
+  weights = NULL,
+  add.totals = NULL,
+  percentage = NULL
+)
 }
 \arguments{
 \item{base}{Base de datos EHE.}
@@ -17,6 +24,9 @@ ehe_tabulate(base, x, y = NULL, weights = NULL, add.totals = NULL)
 
 \item{add.totals}{Indica si se agrega el total.
 Puede ser \code{"row"}, \code{"col"}, \code{"both"} o \code{NULL}.}
+
+\item{percentage}{Indica si se calculan porcentajes para
+tabulados bivariados. Puede ser \code{"row"}, \code{"col"} o \code{NULL}.}
 }
 \value{
 Un tibble con el tabulado.
@@ -24,4 +34,126 @@ Un tibble con el tabulado.
 \description{
 Calcula tabulados uni y bivariados utilizando el factor
 de expansión correspondiente.
+}
+\examples{
+\dontrun{
+# --------------------------------------------------
+# Tabulado bivariado ponderado
+# --------------------------------------------------
+
+tab <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni"
+)
+
+# --------------------------------------------------
+# Agregar total por fila
+# --------------------------------------------------
+
+tab_row <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  add.totals = "row"
+)
+
+# --------------------------------------------------
+# Agregar total por columna
+# --------------------------------------------------
+
+tab_col <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  add.totals = "col"
+)
+
+# --------------------------------------------------
+# Agregar totales por fila y columna
+# --------------------------------------------------
+
+tab_both <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  add.totals = "both"
+)
+
+# --------------------------------------------------
+# Porcentajes por fila
+# --------------------------------------------------
+
+pct_row <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  percentage = "row"
+)
+
+# --------------------------------------------------
+# Porcentajes por columna
+# --------------------------------------------------
+
+pct_col <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  percentage = "col"
+)
+
+# --------------------------------------------------
+# Porcentajes por fila con totales
+# --------------------------------------------------
+
+pct_row_both <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  add.totals = "both",
+  percentage = "row"
+)
+
+# --------------------------------------------------
+# Porcentajes por columna con totales
+# --------------------------------------------------
+
+pct_col_both <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  y = "realizacion_entrevista",
+  weights = "ponduni",
+  add.totals = "both",
+  percentage = "col"
+)
+
+# --------------------------------------------------
+# Tabulado univariado ponderado
+# --------------------------------------------------
+
+tab_uni <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  weights = "ponduni"
+)
+
+# --------------------------------------------------
+# Tabulado univariado con total
+# --------------------------------------------------
+
+tab_uni_total <- ehe_tabulate(
+  base = base_lab,
+  x = "nivel_ed",
+  weights = "ponduni",
+  add.totals = "row"
+)
+}
+
 }
