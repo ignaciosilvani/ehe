@@ -10,47 +10,47 @@ ehe_laboral(base, weights = "ponduni")
 \item{base}{Base de datos individual de la EHE.}
 
 \item{weights}{Nombre de la variable que contiene el factor de
-expansión de la encuesta. Por defecto, \code{"ponduni"}.}
+expansion de la encuesta. Por defecto, \code{"ponduni"}.}
 }
 \value{
 Un tibble con los principales indicadores del mercado laboral,
-incluyendo tasas de actividad y subocupación.
+incluyendo tasas de actividad y subocupacion.
 }
 \description{
-Calcula tasas de actividad, empleo, desocupación y subocupación
-para la población de 14 años y más, utilizando el factor de
-expansión correspondiente.
+Calcula tasas de actividad, empleo, desocupacion y subocupacion
+para la poblacion de 14 anos y mas, utilizando el factor de
+expansion correspondiente.
 }
 \details{
 Las tasas se presentan para:
 \itemize{
-\item población de 14 años y más;
+\item poblacion de 14 anos y mas;
 \item sexo;
 \item grupos de edad;
 \item sexo y grupo de edad;
 \item jefes/as de hogar.
 }
 
-La función calcula los siguientes indicadores:
+La funcion calcula los siguientes indicadores:
 
 \itemize{
-\item Tasa de actividad de la población de 14 años y más.
+\item Tasa de actividad de la poblacion de 14 anos y mas.
 \item Tasa de actividad por sexo.
 \item Tasa de actividad por grupo de edad.
 \item Tasa de actividad por sexo y grupo de edad.
 \item Tasa de actividad de los jefes de hogar.
-\item Tasa de subocupación.
+\item Tasa de subocupacion.
 }
 
 Los grupos etarios utilizados son:
 
 \itemize{
-\item De 14 a 29 años.
-\item De 30 a 64 años.
-\item 65 años y más.
+\item De 14 a 29 anos.
+\item De 30 a 64 anos.
+\item 65 anos y mas.
 }
 
-Aunque el tercer grupo se construye para los cálculos internos,
+Aunque el tercer grupo se construye para los calculos internos,
 no se presenta en los indicadores de actividad por grupo de edad
 ni en los indicadores combinados de sexo y edad.
 }
