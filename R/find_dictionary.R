@@ -16,7 +16,7 @@
       .data$encuesta == encuesta,
       .data$anio == anio_busqueda,
       grepl(
-        "Diseno de registro",
+        "Dise\u00f1o de registro",
         .data$resource_name
       )
     )
