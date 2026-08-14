@@ -2,7 +2,7 @@
 % Please edit documentation in R/catalog.R
 \name{.catalog}
 \alias{.catalog}
-\title{Construye el catalogo de la EHE}
+\title{Construye el catálogo de la EHE}
 \usage{
 .catalog()
 }
@@ -10,6 +10,6 @@
 Un tibble con una fila por recurso.
 }
 \description{
-Obtiene el catalogo desde CKAN y agrega los metadatos derivados.
+Obtiene el catálogo desde CKAN y agrega los metadatos derivados.
 }
 \keyword{internal}

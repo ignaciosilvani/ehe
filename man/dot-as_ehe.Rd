@@ -7,6 +7,6 @@
 .as_ehe(datos, encuesta, localidad, anio, tipo, recurso)
 }
 \description{
-Funcion interna.
+Función interna.
 }
 \keyword{internal}
