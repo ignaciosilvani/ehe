@@ -1,17 +1,17 @@
-#' Procesa un diseño de registro EHE
+#' Procesa un diseno de registro EHE
 #'
-#' Función interna que transforma el diseño de registro
-#' leído desde Excel en un diccionario de variables y categorías.
+#' Funcion interna que transforma el diseno de registro
+#' leido desde Excel en un diccionario de variables y categorias.
 #'
-#' @param x Diseño de registro leído con readxl.
+#' @param x Diseno de registro leido con readxl.
 #'
-#' @return Un tibble con variables, descripciones, códigos,
+#' @return Un tibble con variables, descripciones, codigos,
 #' etiquetas y tipo de registro.
 #'
 #' @keywords internal
 
 .parse_dictionary <- function(x) {
-  
+
   x <- x |>
     dplyr::transmute(
       variable = .data$...1,
@@ -19,8 +19,8 @@
       codigo = .data$...3,
       etiqueta = .data$...4
     )
-  
-  
+
+
   x <- x |>
     dplyr::mutate(
       nueva_variable = grepl(
@@ -28,15 +28,15 @@
         dplyr::coalesce(.data$variable, "")
       )
     )
-  
-  
+
+
   x <- x |>
     dplyr::mutate(
       nueva_variable = .data$nueva_variable &
         !.data$variable %in% c("CAMPO")
     )
-  
-  
+
+
   x <- x |>
     dplyr::mutate(
       variable = dplyr::if_else(
@@ -54,8 +54,8 @@
       variable,
       descripcion
     )
-  
-  
+
+
   x |>
     dplyr::filter(
       .data$nueva_variable |

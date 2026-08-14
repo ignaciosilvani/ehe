@@ -20,12 +20,11 @@ URL: https://github.com/ignaciosilvani/ehe
 BugReports: https://github.com/ignaciosilvani/ehe/issues
 Imports:
     dplyr,
-    httr2,
+    haven,
     jsonlite,
     purrr,
     readr,
     readxl,
-    rlang,
     stringr,
     tibble,
     tidyr

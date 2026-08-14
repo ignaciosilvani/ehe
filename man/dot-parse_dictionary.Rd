@@ -2,19 +2,19 @@
 % Please edit documentation in R/parse_dictionary.R
 \name{.parse_dictionary}
 \alias{.parse_dictionary}
-\title{Procesa un diseño de registro EHE}
+\title{Procesa un diseno de registro EHE}
 \usage{
 .parse_dictionary(x)
 }
 \arguments{
-\item{x}{Diseño de registro leído con readxl.}
+\item{x}{Diseno de registro leido con readxl.}
 }
 \value{
-Un tibble con variables, descripciones, códigos,
+Un tibble con variables, descripciones, codigos,
 etiquetas y tipo de registro.
 }
 \description{
-Función interna que transforma el diseño de registro
-leído desde Excel en un diccionario de variables y categorías.
+Funcion interna que transforma el diseno de registro
+leido desde Excel en un diccionario de variables y categorias.
 }
 \keyword{internal}

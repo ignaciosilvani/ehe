@@ -16,11 +16,11 @@ ehe_labels(
 \item{data}{Base de datos EHE.}
 
 \item{dictionary}{Diccionario obtenido con \code{\link[=ehe_dictionary]{ehe_dictionary()}}.
-Si es \code{NULL}, se obtiene automáticamente.}
+Si es \code{NULL}, se obtiene automaticamente.}
 
 \item{encuesta}{Encuesta EHE.}
 
-\item{anio}{Año del diseño de registro.}
+\item{anio}{Ano del diseno de registro.}
 
 \item{tipo}{Tipo de base: \code{"individual"} o \code{"hogar"}.}
 }
@@ -29,5 +29,5 @@ La base EHE con etiquetas de variables y valores.
 }
 \description{
 Aplica etiquetas de variables y de valores a una base EHE
-utilizando el diseño de registro correspondiente.
+utilizando el diseno de registro correspondiente.
 }

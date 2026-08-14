@@ -2,22 +2,22 @@
 % Please edit documentation in R/ehe_dictionary.R
 \name{ehe_dictionary}
 \alias{ehe_dictionary}
-\title{Obtiene el diseño de registro EHE}
+\title{Obtiene el diseno de registro EHE}
 \usage{
 ehe_dictionary(encuesta = "EHE-M", anio, tipo = c("individual", "hogar"))
 }
 \arguments{
 \item{encuesta}{Encuesta EHE.}
 
-\item{anio}{Año del diseño de registro.}
+\item{anio}{Ano del diseno de registro.}
 
 \item{tipo}{Tipo de base: \code{"hogar"} o \code{"individual"}.}
 }
 \value{
 Un tibble con variables, descripciones,
-códigos y etiquetas.
+codigos y etiquetas.
 }
 \description{
-Descarga, lee y procesa el diseño de registro
+Descarga, lee y procesa el diseno de registro
 de una encuesta EHE.
 }

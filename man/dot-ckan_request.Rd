@@ -9,12 +9,12 @@
 \arguments{
 \item{action}{Endpoint de la API.}
 
-\item{...}{Parámetros enviados a la API.}
+\item{...}{Parametros enviados a la API.}
 }
 \value{
 Una lista con el contenido de \code{result}.
 }
 \description{
-Función interna para realizar consultas a la API CKAN.
+Funcion interna para realizar consultas a la API CKAN.
 }
 \keyword{internal}

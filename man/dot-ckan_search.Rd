@@ -2,7 +2,7 @@
 % Please edit documentation in R/api.R
 \name{.ckan_search}
 \alias{.ckan_search}
-\title{Obtiene el catálogo de la EHE desde CKAN}
+\title{Obtiene el catalogo de la EHE desde CKAN}
 \usage{
 .ckan_search()
 }
@@ -10,6 +10,6 @@
 Lista con los resultados de la consulta.
 }
 \description{
-Obtiene el catálogo de la EHE desde CKAN
+Obtiene el catalogo de la EHE desde CKAN
 }
 \keyword{internal}

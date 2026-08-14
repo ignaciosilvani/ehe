@@ -2,11 +2,11 @@
 % Please edit documentation in R/parse.R
 \name{.parse_catalog}
 \alias{.parse_catalog}
-\title{Convierte el catálogo de CKAN en un tibble}
+\title{Convierte el catalogo de CKAN en un tibble}
 \usage{
 .parse_catalog(catalog)
 }
 \description{
-Convierte el catálogo de CKAN en un tibble
+Convierte el catalogo de CKAN en un tibble
 }
 \keyword{internal}

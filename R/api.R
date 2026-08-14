@@ -3,10 +3,10 @@ CKAN_URL <- "http://datos.estadistica.ec.gba.gov.ar/api/3/action"
 
 #' Consulta la API de CKAN
 #'
-#' Función interna para realizar consultas a la API CKAN.
+#' Funcion interna para realizar consultas a la API CKAN.
 #'
 #' @param action Endpoint de la API.
-#' @param ... Parámetros enviados a la API.
+#' @param ... Parametros enviados a la API.
 #'
 #' @return Una lista con el contenido de `result`.
 #'
@@ -36,14 +36,14 @@ CKAN_URL <- "http://datos.estadistica.ec.gba.gov.ar/api/3/action"
   )
 
   if (!isTRUE(json$success)) {
-    stop("La API de CKAN devolvió un error.", call. = FALSE)
+    stop("La API de CKAN devolvio un error.", call. = FALSE)
   }
 
   json$result
 
 }
 
-#' Obtiene el catálogo de la EHE desde CKAN
+#' Obtiene el catalogo de la EHE desde CKAN
 #'
 #' @return Lista con los resultados de la consulta.
 #'

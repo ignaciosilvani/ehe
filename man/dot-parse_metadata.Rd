@@ -2,11 +2,11 @@
 % Please edit documentation in R/metadata.R
 \name{.parse_metadata}
 \alias{.parse_metadata}
-\title{Agrega metadatos derivados al catálogo}
+\title{Agrega metadatos derivados al catalogo}
 \usage{
 .parse_metadata(catalogo)
 }
 \description{
-Agrega metadatos derivados al catálogo
+Agrega metadatos derivados al catalogo
 }
 \keyword{internal}

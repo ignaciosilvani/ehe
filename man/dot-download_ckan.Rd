@@ -12,6 +12,6 @@
 \item{destfile}{Archivo destino.}
 }
 \description{
-Función interna para descargar recursos.
+Funcion interna para descargar recursos.
 }
 \keyword{internal}

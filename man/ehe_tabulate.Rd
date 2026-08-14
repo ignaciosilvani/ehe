@@ -20,7 +20,7 @@ ehe_tabulate(
 
 \item{y}{Variable opcional para un tabulado bivariado.}
 
-\item{weights}{Variable de ponderación.}
+\item{weights}{Variable de ponderacion.}
 
 \item{add.totals}{Indica si se agrega el total.
 Puede ser \code{"row"}, \code{"col"}, \code{"both"} o \code{NULL}.}
@@ -33,7 +33,7 @@ Un tibble con el tabulado.
 }
 \description{
 Calcula tabulados uni y bivariados utilizando el factor
-de expansión correspondiente.
+de expansion correspondiente.
 }
 \examples{
 \dontrun{

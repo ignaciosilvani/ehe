@@ -1,12 +1,12 @@
 #' Tabulados ponderados de EHE
 #'
 #' Calcula tabulados uni y bivariados utilizando el factor
-#' de expansión correspondiente.
+#' de expansion correspondiente.
 #'
 #' @param base Base de datos EHE.
 #' @param x Variable para el tabulado.
 #' @param y Variable opcional para un tabulado bivariado.
-#' @param weights Variable de ponderación.
+#' @param weights Variable de ponderacion.
 #' @param add.totals Indica si se agrega el total.
 #' Puede ser `"row"`, `"col"`, `"both"` o `NULL`.
 #' @param percentage Indica si se calculan porcentajes para
@@ -167,7 +167,7 @@ ehe_tabulate <- function(
     stop(
       paste0(
         "La variable `", x,
-        "` no está presente en la base."
+        "` no esta presente en la base."
       ),
       call. = FALSE
     )
@@ -186,7 +186,7 @@ ehe_tabulate <- function(
       stop(
         paste0(
           "La variable `", y,
-          "` no está presente en la base."
+          "` no esta presente en la base."
         ),
         call. = FALSE
       )
@@ -205,8 +205,8 @@ ehe_tabulate <- function(
     if (!weights %in% names(base)) {
       stop(
         paste0(
-          "La variable de ponderación `", weights,
-          "` no está presente en la base."
+          "La variable de ponderacion `", weights,
+          "` no esta presente en la base."
         ),
         call. = FALSE
       )
@@ -386,10 +386,10 @@ ehe_tabulate <- function(
   # ==================================================
 
   # `x` puede ser haven_labelled y, por lo tanto,
-  # internamente numérico.
+  # internamente numerico.
   #
   # Identificamos las columnas que contienen las
-  # categorías de `y` antes de agregar los totales.
+  # categorias de `y` antes de agregar los totales.
 
   columnas_frecuencia <- setdiff(
     names(resultado),
@@ -478,11 +478,11 @@ ehe_tabulate <- function(
   if (!is.null(percentage)) {
 
     # ------------------------------------------------
-    # Las únicas columnas que participan del cálculo
+    # Las unicas columnas que participan del calculo
     # son las columnas de frecuencias.
     #
-    # x queda completamente excluida del cálculo,
-    # aunque sea haven_labelled y numérica.
+    # x queda completamente excluida del calculo,
+    # aunque sea haven_labelled y numerica.
     # ------------------------------------------------
 
     columnas_pct <- columnas_frecuencia

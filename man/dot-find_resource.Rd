@@ -2,23 +2,23 @@
 % Please edit documentation in R/find_resource.R
 \name{.find_resource}
 \alias{.find_resource}
-\title{Busca un recurso en el catálogo}
+\title{Busca un recurso en el catalogo}
 \usage{
 .find_resource(encuesta, anio, tipo, municipio = NULL)
 }
 \arguments{
 \item{encuesta}{Tipo de encuesta ("EHE-M" o "EHE-P").}
 
-\item{anio}{Año de la encuesta.}
+\item{anio}{Ano de la encuesta.}
 
 \item{tipo}{Tipo de base ("individual" o "hogar").}
 
 \item{municipio}{Municipio (solo para EHE-M).}
 }
 \value{
-Una fila del catálogo.
+Una fila del catalogo.
 }
 \description{
-Busca un recurso en el catálogo
+Busca un recurso en el catalogo
 }
 \keyword{internal}

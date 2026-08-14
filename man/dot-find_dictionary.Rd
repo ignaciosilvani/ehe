@@ -2,11 +2,11 @@
 % Please edit documentation in R/find_dictionary.R
 \name{.find_dictionary}
 \alias{.find_dictionary}
-\title{Busca diseño de registro EHE}
+\title{Busca diseno de registro EHE}
 \usage{
 .find_dictionary(encuesta, anio_busqueda)
 }
 \description{
-Función interna.
+Funcion interna.
 }
 \keyword{internal}

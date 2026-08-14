@@ -14,7 +14,7 @@ get_ehe(
 \arguments{
 \item{encuesta}{Tipo de encuesta. Por defecto "EHE-M".}
 
-\item{anio}{Año de la encuesta.}
+\item{anio}{Ano de la encuesta.}
 
 \item{tipo}{Tipo de base: "individual" o "hogar".}
 

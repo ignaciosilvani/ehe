@@ -3,7 +3,7 @@
 #' Descarga una base usuaria de la Encuesta de Hogar y Empleo.
 #'
 #' @param encuesta Tipo de encuesta. Por defecto "EHE-M".
-#' @param anio Año de la encuesta.
+#' @param anio Ano de la encuesta.
 #' @param tipo Tipo de base: "individual" o "hogar".
 #' @param localidad Localidad de la encuesta.
 #'
@@ -46,7 +46,7 @@ get_ehe <- function(encuesta = "EHE-M",
   if (nrow(recurso) > 1) {
 
     stop(
-      "La búsqueda devuelve más de un recurso. Revise los parámetros.",
+      "La busqueda devuelve mas de un recurso. Revise los parametros.",
       call. = FALSE
     )
 

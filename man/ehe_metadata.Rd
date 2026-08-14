@@ -2,7 +2,7 @@
 % Please edit documentation in R/ehe_metadata.R
 \name{ehe_metadata}
 \alias{ehe_metadata}
-\title{Información de una base EHE}
+\title{Informacion de una base EHE}
 \usage{
 ehe_metadata(x)
 }
@@ -10,7 +10,7 @@ ehe_metadata(x)
 \item{x}{Objeto de clase ehe.}
 }
 \value{
-Un tibble con información de la encuesta.
+Un tibble con informacion de la encuesta.
 }
 \description{
 Muestra los metadatos asociados a una base EHE descargada.

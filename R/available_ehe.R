@@ -1,11 +1,11 @@
 #' Consulta las bases EHE disponibles
 #'
-#' Devuelve un catálogo de las encuestas EHE disponibles
-#' por localidad, año y tipo de base.
+#' Devuelve un catalogo de las encuestas EHE disponibles
+#' por localidad, ano y tipo de base.
 #'
 #' @param encuesta Tipo de encuesta.
 #' @param localidad Localidad o municipio.
-#' @param anio Año.
+#' @param anio Ano.
 #'
 #' @return Un tibble con las encuestas disponibles.
 #'

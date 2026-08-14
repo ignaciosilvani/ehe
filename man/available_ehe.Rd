@@ -11,12 +11,12 @@ available_ehe(encuesta = NULL, localidad = NULL, anio = NULL)
 
 \item{localidad}{Localidad o municipio.}
 
-\item{anio}{Año.}
+\item{anio}{Ano.}
 }
 \value{
 Un tibble con las encuestas disponibles.
 }
 \description{
-Devuelve un catálogo de las encuestas EHE disponibles
-por localidad, año y tipo de base.
+Devuelve un catalogo de las encuestas EHE disponibles
+por localidad, ano y tipo de base.
 }
