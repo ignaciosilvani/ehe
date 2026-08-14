@@ -52,6 +52,8 @@ Algunas de las principales funciones del paquete son:
 
 - **`ehe_tabulate()`**: Permite realizar tabulados ponderados uni y bivariados utilizando el factor de expansión correspondiente.
 
+- **`ehe_demografico()`**: Calcula indicadores sociodemográficos para la población de 14 años y más, incluyendo población total, distribución por sexo, grupos de edad, sexo y grupo de edad y jefatura del hogar.
+
 - **`ehe_laboral()`**: Calcula tasas e indicadores básicos del mercado laboral, incluyendo tasas de actividad, empleo, desocupación y subocupación.
 
 ## Fuente de los datos
@@ -209,6 +211,34 @@ ehe_tabulate(
 
 La función permite además incorporar totales y calcular porcentajes según las opciones disponibles.
 
+### Indicadores sociodemográficos
+
+La función `ehe_demografico()` permite calcular indicadores sociodemográficos para la población de 14 años y más.
+
+Por ejemplo:
+
+```{r, eval = FALSE}
+ehe_demografico(
+  base = base
+)
+```
+
+La función utiliza el factor de expansión `ponduni` y calcula:
+
+- población de 14 años y más;
+- distribución por sexo;
+- distribución por grupos de edad;
+- distribución conjunta por sexo y grupo de edad;
+- cantidad y proporción de jefes de hogar.
+
+Los grupos de edad utilizados son:
+
+- de 14 a 29 años;
+- de 30 a 64 años;
+- 65 años y más.
+
+La función construye internamente las variables derivadas necesarias para estos indicadores, por lo que no es necesario crearlas previamente en la base.
+
 ### Indicadores del mercado laboral
 
 La función `ehe_laboral()` permite calcular indicadores laborales a partir de una base individual.
@@ -270,6 +300,11 @@ ehe_tabulate(
   base = base,
   x = "condact",
   weights = "ponduni"
+)
+
+# Calcular indicadores sociodemográficos
+ehe_demografico(
+  base = base
 )
 
 # Calcular indicadores laborales
