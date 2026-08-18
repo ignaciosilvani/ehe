@@ -65,6 +65,10 @@ Algunas de las principales funciones del paquete son:
     laboral, incluyendo tasas de actividad, empleo, desocupación y
     subocupación.
 
+-   **`ehe_app()`**: Abre una aplicación Shiny para explorar los
+    indicadores laborales de la EHE mediante filtros por municipio y
+    año.
+
 ## Fuente de los datos
 
 El paquete utiliza el catálogo oficial de datos abiertos de la
@@ -294,9 +298,29 @@ Los indicadores se presentan para la población de 14 años y más y
 permiten desagregaciones por sexo, grupo de edad, sexo y grupo de edad y
 jefatura del hogar.
 
+### Aplicación interactiva
+
+La función `ehe_app()` permite explorar de forma interactiva los
+indicadores laborales calculados a partir de la EHE.
+
+La aplicación permite seleccionar:
+
+-   municipio;
+-   año.
+
+A partir de la selección, se descargan y procesan los microdatos
+correspondientes y se muestran los indicadores generados por
+`ehe_laboral()`.
+
+La aplicación se inicia mediante:
+
+``` r
+ehe_app()
+
 ## Ejemplo de flujo completo
 
 Un flujo de trabajo habitual puede ser:
+```
 
 ``` r
 library(ehe)
@@ -345,6 +369,13 @@ ehe_laboral(
   base = base,
   weights = "ponduni"
 )
+```
+
+También es posible explorar los indicadores laborales mediante la
+aplicación interactiva:
+
+``` r
+ehe_app()
 ```
 
 ## Cómo citar este paquete
