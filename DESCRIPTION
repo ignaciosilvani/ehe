@@ -25,7 +25,7 @@ Imports:
     purrr,
     readr,
     readxl,
+    shiny,
     stringr,
     tibble,
     tidyr
-
