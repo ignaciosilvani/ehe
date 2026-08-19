@@ -2,21 +2,20 @@
 % Please edit documentation in R/ehe_app.R
 \name{ehe_app}
 \alias{ehe_app}
-\title{Shiny application to explore EHE labor indicators}
+\title{Aplicacion Shiny para explorar indicadores laborales de la EHE}
 \usage{
 ehe_app()
 }
 \value{
-Does not return an object. Runs a Shiny application.
+No devuelve un objeto. Ejecuta una aplicacion Shiny.
 }
 \description{
-Opens a Shiny application that allows users to select a municipality
-and a year and consult the labor indicators calculated by
-\code{\link[=ehe_laboral]{ehe_laboral()}}.
+Abre una aplicacion Shiny que permite seleccionar un municipio
+y un anio y consultar los indicadores laborales calculados
+mediante \code{\link[=ehe_laboral]{ehe_laboral()}}.
 }
 \examples{
-\dontrun{
-ehe_app()
+if (interactive()) {
+  ehe_app()
 }
-
 }
