@@ -20,12 +20,10 @@ ehe_dictionary <- function(
 
   tipo <- match.arg(tipo)
 
-
   recurso <- .find_dictionary(
     encuesta = encuesta,
     anio_busqueda = anio
   )
-
 
   if (nrow(recurso) == 0) {
     stop(
@@ -34,17 +32,18 @@ ehe_dictionary <- function(
     )
   }
 
+  extension <- tools::file_ext(
+    recurso$url[1]
+  )
 
   archivo <- tempfile(
-    fileext = ".xlsx"
+    fileext = paste0(".", extension)
   )
-
 
   .download_ckan(
-    url = recurso$url,
+    url = recurso$url[1],
     destfile = archivo
   )
-
 
   hoja <- if (tipo == "hogar") {
     "Hogar"
@@ -52,16 +51,13 @@ ehe_dictionary <- function(
     "Personas"
   }
 
-
   diccionario <- readxl::read_excel(
     archivo,
     sheet = hoja,
     col_names = FALSE
   )
 
-
   .parse_dictionary(
     diccionario
   )
-
 }
