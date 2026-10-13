@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata xml:lang="es"><Esri><CreaDate>20220804</CreaDate><CreaTime>15485300</CreaTime><ArcGISFormat>1.0</ArcGISFormat><SyncOnce>TRUE</SyncOnce><DataProperties><lineage><Process ToolSource="c:\program files (x86)\arcgis\desktop10.8\ArcToolbox\Toolboxes\Data Management Tools.tbx\DeleteField" Date="20220804" Time="154853">DeleteField Provincia_SinIslas_2022 FID_1;AREA;PERIMETER;CABECERA;COD_CEN;SECC_ELECT;REG_EDUC;Etiqueta;TMI_Def_In</Process></lineage></DataProperties></Esri></metadata>
