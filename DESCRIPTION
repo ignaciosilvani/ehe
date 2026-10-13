@@ -27,5 +27,7 @@ Imports:
     readxl,
     shiny,
     stringr,
+    ggplot2,
+    sf,
     tibble,
     tidyr

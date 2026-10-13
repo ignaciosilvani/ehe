@@ -1,3 +1,4 @@
+
 #' Aplicacion Shiny para explorar indicadores de la EHE
 #'
 #' Abre una aplicacion Shiny que permite seleccionar un municipio,
@@ -17,26 +18,19 @@
 ehe_app <- function() {
 
   # ------------------------------------------------------------
-  # Recursos de la EHE
+  # RECURSOS DE LA EHE
   # ------------------------------------------------------------
 
   shiny::addResourcePath(
     "ehe-www",
-    system.file(
-      "www",
-      package = "ehe"
-    )
+    system.file("www", package = "ehe")
   )
 
   # ------------------------------------------------------------
-  # Consultar bases disponibles
+  # BASES DISPONIBLES
   # ------------------------------------------------------------
 
   disponibles <- available_ehe()
-
-  # ------------------------------------------------------------
-  # Ordenar y limpiar municipios
-  # ------------------------------------------------------------
 
   municipios <- disponibles |>
     dplyr::distinct(municipio) |>
@@ -44,7 +38,50 @@ ehe_app <- function() {
     dplyr::arrange(municipio)
 
   # ------------------------------------------------------------
-  # Aplicacion
+  # PREPARAR MAPA DE MUNICIPIOS
+  # ------------------------------------------------------------
+
+  normalizar_municipio <- function(x) {
+    x <- iconv(x, from = "", to = "ASCII//TRANSLIT")
+    toupper(trimws(x))
+  }
+
+  ruta_mapa <- system.file(
+    "mapas",
+    "Provincia.shp",
+    package = "ehe"
+  )
+
+  # Alternativa para desarrollo local
+  if (ruta_mapa == "") {
+    ruta_mapa <- file.path(
+      "inst",
+      "mapas",
+      "Provincia.shp"
+    )
+  }
+
+  if (!file.exists(ruta_mapa)) {
+    stop(
+      paste0(
+        "No se encontro el shapefile en: ",
+        ruta_mapa,
+        ". Verifica que Provincia.shp y sus archivos asociados ",
+        "esten dentro de inst/mapas/."
+      )
+    )
+  }
+
+  municipios_shp <- sf::st_read(
+    ruta_mapa,
+    quiet = TRUE
+  )
+
+  municipios_shp$municipio_clave <-
+    normalizar_municipio(municipios_shp$PARTIDO)
+
+  # ------------------------------------------------------------
+  # APLICACION
   # ------------------------------------------------------------
 
   shiny::shinyApp(
@@ -106,7 +143,6 @@ ehe_app <- function() {
             height: 100%;
             padding: 25px 45px;
             box-sizing: border-box;
-
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -206,7 +242,7 @@ ehe_app <- function() {
 
 
           /* --------------------------------------------------
-             RESULTADOS
+             PANEL DE RESULTADOS
           -------------------------------------------------- */
 
           .ehe-results {
@@ -225,6 +261,34 @@ ehe_app <- function() {
             margin-bottom: 22px;
             padding-bottom: 12px;
             border-bottom: 2px solid #168eb6;
+          }
+
+
+          /* --------------------------------------------------
+             DISTRIBUCION: TABLA IZQUIERDA, MAPA DERECHA
+          -------------------------------------------------- */
+
+          .ehe-results-layout {
+            display: flex;
+            align-items: flex-start;
+            gap: 25px;
+            width: 100%;
+            box-sizing: border-box;
+          }
+
+          .ehe-table {
+            flex: 1 1 0;
+            min-width: 0;
+          }
+
+          .ehe-map {
+            flex: 0 0 36%;
+            min-width: 0;
+            margin-top: 0;
+          }
+
+          .ehe-map .shiny-plot-output {
+            width: 100%;
           }
 
 
@@ -254,6 +318,10 @@ ehe_app <- function() {
             background-color: #fafafa;
           }
 
+          .ehe-table .table-responsive {
+            overflow-x: auto;
+          }
+
 
           /* --------------------------------------------------
              FUENTE
@@ -261,8 +329,8 @@ ehe_app <- function() {
 
           .ehe-source {
             margin-top: 18px;
-            padding-top: 12px;
-            border-top: 1px solid #dddddd;
+            padding-top: 0;
+            border-top: none;
             color: #666666;
             font-size: 12px;
           }
@@ -273,6 +341,7 @@ ehe_app <- function() {
           -------------------------------------------------- */
 
           .ehe-footer {
+            text-align: center;
             max-width: 1250px;
             margin: 0 auto;
             padding: 18px 30px 30px 30px;
@@ -327,6 +396,20 @@ ehe_app <- function() {
             .ehe-result-title {
               font-size: 19px;
             }
+
+            .ehe-results-layout {
+              flex-direction: column;
+            }
+
+            .ehe-table,
+            .ehe-map {
+              width: 100%;
+              flex: 1 1 auto;
+            }
+
+            .ehe-map {
+              margin-top: 15px;
+            }
           }
 
           ")
@@ -341,13 +424,11 @@ ehe_app <- function() {
       shiny::div(
         class = "ehe-header",
 
-        # Banner como fondo del encabezado
         shiny::img(
           src = "ehe-www/banner_ehe.png",
           class = "ehe-banner"
         ),
 
-        # Contenido superpuesto al banner
         shiny::div(
           class = "ehe-header-main",
 
@@ -390,7 +471,6 @@ ehe_app <- function() {
 
           shiny::fluidRow(
 
-            # Municipio
             shiny::column(
               width = 4,
 
@@ -402,7 +482,6 @@ ehe_app <- function() {
               )
             ),
 
-            # Anio
             shiny::column(
               width = 2,
 
@@ -413,7 +492,6 @@ ehe_app <- function() {
               )
             ),
 
-            # Tipo de indicador
             shiny::column(
               width = 3,
 
@@ -428,7 +506,6 @@ ehe_app <- function() {
               )
             ),
 
-            # Indicador laboral
             shiny::column(
               width = 3,
 
@@ -459,18 +536,38 @@ ehe_app <- function() {
         shiny::div(
           class = "ehe-results",
 
+          # Titulo: ocupa todo el ancho del panel
           shiny::h2(
             class = "ehe-result-title",
             shiny::textOutput("titulo_resultado")
           ),
 
-          shiny::tableOutput(
-            "indicadores"
-          ),
-
+          # Tabla a la izquierda y mapa a la derecha
           shiny::div(
-            class = "ehe-source",
-            shiny::textOutput("fuente")
+            class = "ehe-results-layout",
+
+            # Tabla y fuente
+            shiny::div(
+              class = "ehe-table",
+
+              shiny::tableOutput("indicadores"),
+
+              shiny::div(
+                class = "ehe-source",
+                shiny::textOutput("fuente")
+              )
+            ),
+
+            # Mapa a la derecha
+            shiny::div(
+              class = "ehe-map",
+
+              shiny::plotOutput(
+                "mapa_municipio",
+                height = "430px",
+                width = "100%"
+              )
+            )
           )
         )
       ),
@@ -484,9 +581,7 @@ ehe_app <- function() {
         class = "ehe-footer",
 
         shiny::HTML(
-          "<strong>Encuesta de Hogares y Empleo</strong> \u00b7
-            Direcci\u00f3n Provincial de Estad\u00edstica \u00b7
-           Provincia de Buenos Aires"
+          "Direcci\u00f3n Provincial de Estad\u00edstica. Subsecretar\u00eda de Coordinaci\u00f3n Econ\u00f3mica y Estad\u00edstica. Ministerio de Econom\u00eda.Provincia de Buenos Aires"
         )
       )
     ),
@@ -499,7 +594,7 @@ ehe_app <- function() {
     server = function(input, output, session) {
 
       # --------------------------------------------------------
-      # Actualizar anios segun municipio
+      # ACTUALIZAR A\u00f1OS SEGUN MUNICIPIO
       # --------------------------------------------------------
 
       shiny::observeEvent(
@@ -526,7 +621,7 @@ ehe_app <- function() {
 
 
       # --------------------------------------------------------
-      # Base seleccionada
+      # BASE SELECCIONADA
       # --------------------------------------------------------
 
       base_seleccionada <- shiny::reactive({
@@ -546,7 +641,7 @@ ehe_app <- function() {
         shiny::validate(
           shiny::need(
             nrow(recurso) > 0,
-            "No se encontro una base individual para la selecci\u00f3n."
+            "No se encontr\u00f3 una base individual para la selecci\u00f3n."
           )
         )
 
@@ -560,7 +655,7 @@ ehe_app <- function() {
 
 
       # --------------------------------------------------------
-      # Indicadores
+      # INDICADORES
       # --------------------------------------------------------
 
       indicadores <- shiny::reactive({
@@ -570,10 +665,6 @@ ehe_app <- function() {
         shiny::req(
           input$tipo_indicador
         )
-
-        # ------------------------------------------------------
-        # Mercado laboral
-        # ------------------------------------------------------
 
         if (input$tipo_indicador == "laboral") {
 
@@ -589,10 +680,6 @@ ehe_app <- function() {
               Indicador == input$indicador_laboral
             )
 
-          # ------------------------------------------------------
-          # Sociodemograficos
-          # ------------------------------------------------------
-
         } else {
 
           ehe_demografico(
@@ -603,7 +690,7 @@ ehe_app <- function() {
 
 
       # --------------------------------------------------------
-      # Titulo de los resultados
+      # TITULO DE LOS RESULTADOS
       # --------------------------------------------------------
 
       output$titulo_resultado <- shiny::renderText({
@@ -638,71 +725,90 @@ ehe_app <- function() {
 
 
       # --------------------------------------------------------
-      # Mostrar indicadores
+      # MOSTRAR INDICADORES
       # --------------------------------------------------------
 
       output$indicadores <- shiny::renderTable({
 
         datos <- indicadores()
 
-        # ------------------------------------------------------
-        # Indicadores laborales
-        # ------------------------------------------------------
-
-        if (input$tipo_indicador == "laboral") {
-
-          datos |>
-            dplyr::mutate(
-              Porcentaje = paste0(
-                format(
-                  round(
-                    Porcentaje,
-                    1
-                  ),
-                  decimal.mark = ","
-                ),
-                "%"
-              )
+        datos |>
+          dplyr::mutate(
+            Porcentaje = paste0(
+              format(
+                round(Porcentaje, 1),
+                decimal.mark = ",",
+                nsmall = 1
+              ),
+              "%"
             )
-
-          # ------------------------------------------------------
-          # Indicadores sociodemograficos
-          # ------------------------------------------------------
-
-        } else {
-
-          datos |>
-            dplyr::mutate(
-              Porcentaje = paste0(
-                format(
-                  round(
-                    Porcentaje,
-                    1
-                  ),
-                  decimal.mark = ","
-                ),
-                "%"
-              )
-            )
-        }
+          )
       })
 
 
       # --------------------------------------------------------
-      # Fuente de los datos
+      # MAPA REACTIVO DEL MUNICIPIO SELECCIONADO
+      # --------------------------------------------------------
+
+      output$mapa_municipio <- shiny::renderPlot({
+
+        shiny::req(input$municipio)
+
+        clave <- normalizar_municipio(input$municipio)
+
+        # Equivalencias entre EHE y el shapefile
+        if (clave == "SAN MARTIN") {
+          clave <- "GRAL. SAN MARTIN"
+        }
+
+        if (clave == "VIAMONTE") {
+          clave <- "GRAL. VIAMONTE"
+        }
+
+        mapa <- municipios_shp |>
+          dplyr::mutate(
+            seleccionado = municipio_clave == clave
+          )
+
+        ggplot2::ggplot(mapa) +
+
+          ggplot2::geom_sf(
+            ggplot2::aes(fill = seleccionado),
+            color = "white",
+            linewidth = 0.2
+          ) +
+
+          ggplot2::scale_fill_manual(
+            values = c(
+              "FALSE" = "#e2e6e9",
+              "TRUE" = "#168eb6"
+            ),
+            guide = "none"
+          ) +
+
+          ggplot2::theme_void() +
+
+          ggplot2::theme(
+            plot.background = ggplot2::element_rect(
+              fill = "transparent",
+              color = NA
+            ),
+            panel.background = ggplot2::element_rect(
+              fill = "transparent",
+              color = NA
+            ),
+            plot.margin = ggplot2::margin(0, 0, 0, 0)
+          )
+
+      }, bg = "transparent")
+
+
+      # --------------------------------------------------------
+      # FUENTE DE LOS DATOS
       # --------------------------------------------------------
 
       output$fuente <- shiny::renderText({
-
-        shiny::req(
-          input$anio
-        )
-
-        paste(
-          "Fuente: EHE",
-          input$anio,
-          "- Direcci\u00f3n Provincial de Estad\u00edstica"
-        )
+        "Fuente: Departamento de An\u00e1lisis de las Estad\u00edsticas Sociales a partir de la Encuesta de Hogares y Empleo Municipal (EHE-M)."
       })
     }
   )
