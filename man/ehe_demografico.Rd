@@ -23,6 +23,13 @@ expansion \code{ponduni}.
 
 La funcion construye internamente las variables derivadas
 \code{etarios} y \code{sexoedad}.
+
+Es compatible con las distintas estructuras historicas de
+la EHE:
+\itemize{
+\item 2010 a 2013: \code{sexo}, \code{edad} y \code{parentesco}
+\item 2014 en adelante: \code{vi4}, \code{vi6} y \code{vi3}
+}
 }
 \examples{
 \dontrun{

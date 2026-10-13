@@ -10,6 +10,11 @@
 #' La funcion construye internamente las variables derivadas
 #' `etarios` y `sexoedad`.
 #'
+#' Es compatible con las distintas estructuras historicas de
+#' la EHE:
+#' - 2010 a 2013: `sexo`, `edad` y `parentesco`
+#' - 2014 en adelante: `vi4`, `vi6` y `vi3`
+#'
 #' @param base Base de datos de personas de la EHE.
 #'
 #' @return Un tibble con los indicadores sociodemograficos.
@@ -26,19 +31,40 @@ ehe_demografico <- function(base) {
   # Validaciones
   # ------------------------------------------------------------
 
-  variables_requeridas <- c(
-    "vi3",
-    "vi4",
-    "vi6",
-    "ponduni"
-  )
-
-  faltantes <- setdiff(variables_requeridas, names(base))
-
-  if (length(faltantes) > 0) {
+  if (!is.data.frame(base)) {
     stop(
-      "La base no contiene las variables requeridas: ",
-      paste(faltantes, collapse = ", "),
+      "`base` debe ser un data.frame o tibble.",
+      call. = FALSE
+    )
+  }
+
+  # ------------------------------------------------------------
+  # Identificar estructura de la base
+  # ------------------------------------------------------------
+
+  if (all(c("sexo", "edad", "parentesco", "ponduni") %in% names(base))) {
+
+    # Estructura 2010-2013
+    sexo_var <- "sexo"
+    edad_var <- "edad"
+    parentesco_var <- "parentesco"
+
+  } else if (all(c("vi3", "vi4", "vi6", "ponduni") %in% names(base))) {
+
+    # Estructura 2014 en adelante
+    sexo_var <- "vi4"
+    edad_var <- "vi6"
+    parentesco_var <- "vi3"
+
+  } else {
+
+    stop(
+      paste0(
+        "La base no contiene las variables requeridas para ninguna ",
+        "de las estructuras historicas de la EHE. ",
+        "Para 2010-2013 se requieren: sexo, edad, parentesco y ponduni. ",
+        "Para 2014 en adelante se requieren: vi3, vi4, vi6 y ponduni."
+      ),
       call. = FALSE
     )
   }
@@ -48,7 +74,9 @@ ehe_demografico <- function(base) {
   # ------------------------------------------------------------
 
   datos <- base |>
-    dplyr::filter(vi6 > 13)
+    dplyr::filter(
+      .data[[edad_var]] > 13
+    )
 
   # ------------------------------------------------------------
   # Variables derivadas
@@ -59,21 +87,43 @@ ehe_demografico <- function(base) {
 
       # Grupos de edad
       etarios = dplyr::case_when(
-        vi6 >= 14 & vi6 <= 29 ~ 1,
-        vi6 >= 30 & vi6 <= 64 ~ 2,
-        vi6 >= 65 ~ 3,
+        .data[[edad_var]] >= 14 &
+          .data[[edad_var]] <= 29 ~ 1,
+
+        .data[[edad_var]] >= 30 &
+          .data[[edad_var]] <= 64 ~ 2,
+
+        .data[[edad_var]] >= 65 ~ 3,
+
         TRUE ~ NA_real_
       ),
 
       # Sexo + grupo de edad
       sexoedad = dplyr::case_when(
-        vi4 == 1 & etarios == 1 ~ "Varon de 14 a 29 anos",
-        vi4 == 1 & etarios == 2 ~ "Varon de 30 a 64 anos",
-        vi4 == 1 & etarios == 3 ~ "Varon de 65 anos y mas",
 
-        vi4 == 2 & etarios == 1 ~ "Mujer de 14 a 29 anos",
-        vi4 == 2 & etarios == 2 ~ "Mujer de 30 a 64 anos",
-        vi4 == 2 & etarios == 3 ~ "Mujer de 65 anos y mas",
+        .data[[sexo_var]] == 1 &
+          etarios == 1 ~
+          "Varones de 14 a 29 a\u00f1os",
+
+        .data[[sexo_var]] == 1 &
+          etarios == 2 ~
+          "Varones de 30 a 64 a\u00f1os",
+
+        .data[[sexo_var]] == 1 &
+          etarios == 3 ~
+          "Varones de 65 a\u00f1os y m\u00e1s",
+
+        .data[[sexo_var]] == 2 &
+          etarios == 1 ~
+          "Mujeres de 14 a 29 a\u00f1os",
+
+        .data[[sexo_var]] == 2 &
+          etarios == 2 ~
+          "Mujeres de 30 a 64 a\u00f1os",
+
+        .data[[sexo_var]] == 2 &
+          etarios == 3 ~
+          "Mujeres de 65 a\u00f1os y m\u00e1s",
 
         TRUE ~ NA_character_
       )
@@ -85,16 +135,17 @@ ehe_demografico <- function(base) {
 
   total_p <- datos |>
     dplyr::summarise(
-      CANTIDAD = round(sum(ponduni, na.rm = TRUE), 0)
+      Cantidad = as.integer(round(sum(ponduni, na.rm = TRUE), 0))
     ) |>
     dplyr::mutate(
-      `INDICADORES SOCIODEMOGRAFICOS` = "Poblacion de 14 anos y mas",
-      `%` = 100
+      Indicador = "Poblaci\u00f3n de 14 a\u00f1os y m\u00e1s",
+      Porcentaje = 100,
+      Cantidad = format(Cantidad, big.mark = ".", decimal.mark = ",", scientific = FALSE)
     ) |>
     dplyr::select(
-      `INDICADORES SOCIODEMOGRAFICOS`,
-      CANTIDAD,
-      `%`
+      Indicador,
+      Cantidad,
+      Porcentaje
     )
 
   # ------------------------------------------------------------
@@ -102,25 +153,37 @@ ehe_demografico <- function(base) {
   # ------------------------------------------------------------
 
   sexo_p <- datos |>
-    dplyr::group_by(vi4) |>
+    dplyr::group_by(
+      .data[[sexo_var]]
+    ) |>
     dplyr::summarise(
-      CANTIDAD = round(sum(ponduni, na.rm = TRUE), 0),
+      Cantidad = as.integer(round(sum(ponduni, na.rm = TRUE), 0)),
       .groups = "drop"
     ) |>
     dplyr::mutate(
-      `%` = round(CANTIDAD / sum(CANTIDAD) * 100, 1),
-      `INDICADORES SOCIODEMOGRAFICOS` = dplyr::case_when(
-        vi4 == 1 ~ "Varon",
-        vi4 == 2 ~ "Mujer",
-        TRUE ~ NA_character_
-      )
+            Porcentaje = round(Cantidad / sum(Cantidad) * 100, 1),
+      Indicador =
+        dplyr::case_when(
+
+          .data[[sexo_var]] == 1 ~
+            "Varones",
+
+          .data[[sexo_var]] == 2 ~
+            "Mujeres",
+
+          TRUE ~
+            NA_character_
+        ),
+      Cantidad = format(Cantidad, big.mark = ".", decimal.mark = ",", scientific = FALSE)
     ) |>
     dplyr::select(
-      `INDICADORES SOCIODEMOGRAFICOS`,
-      CANTIDAD,
-      `%`
+      Indicador,
+      Cantidad,
+      Porcentaje
     ) |>
-    dplyr::arrange(`INDICADORES SOCIODEMOGRAFICOS`)
+    dplyr::arrange(
+      Indicador
+    )
 
   # ------------------------------------------------------------
   # Grupos de edad
@@ -129,22 +192,32 @@ ehe_demografico <- function(base) {
   etario_p <- datos |>
     dplyr::group_by(etarios) |>
     dplyr::summarise(
-      CANTIDAD = round(sum(ponduni, na.rm = TRUE), 0),
+      Cantidad = as.integer(round(sum(ponduni, na.rm = TRUE), 0)),
       .groups = "drop"
     ) |>
     dplyr::mutate(
-      `%` = round(CANTIDAD / sum(CANTIDAD) * 100, 1),
-      `INDICADORES SOCIODEMOGRAFICOS` = dplyr::case_when(
-        etarios == 1 ~ "De 14 a 29 anos",
-        etarios == 2 ~ "De 30 a 64 anos",
-        etarios == 3 ~ "65 anos y mas",
-        TRUE ~ NA_character_
-      )
+      Porcentaje = round(Cantidad / sum(Cantidad) * 100, 1),
+      Indicador =
+        dplyr::case_when(
+
+          etarios == 1 ~
+            "De 14 a 29 a\u00f1os",
+
+          etarios == 2 ~
+            "De 30 a 64 a\u00f1os",
+
+          etarios == 3 ~
+            "65 a\u00f1os y m\u00e1s",
+
+          TRUE ~
+            NA_character_
+        ),
+      Cantidad = format(Cantidad, big.mark = ".", decimal.mark = ",", scientific = FALSE)
     ) |>
     dplyr::select(
-      `INDICADORES SOCIODEMOGRAFICOS`,
-      CANTIDAD,
-      `%`
+      Indicador,
+      Cantidad,
+      Porcentaje
     )
 
   # ------------------------------------------------------------
@@ -154,17 +227,18 @@ ehe_demografico <- function(base) {
   sexoedad_p <- datos |>
     dplyr::group_by(sexoedad) |>
     dplyr::summarise(
-      CANTIDAD = round(sum(ponduni, na.rm = TRUE), 0),
+      Cantidad = as.integer(round(sum(ponduni, na.rm = TRUE), 0)),
       .groups = "drop"
     ) |>
     dplyr::mutate(
-      `%` = round(CANTIDAD / sum(CANTIDAD) * 100, 1),
-      `INDICADORES SOCIODEMOGRAFICOS` = sexoedad
+      Porcentaje = round(Cantidad / sum(Cantidad) * 100, 1),
+      Indicador = sexoedad,
+      Cantidad = format(Cantidad, big.mark = ".", decimal.mark = ",", scientific = FALSE)
     ) |>
     dplyr::select(
-      `INDICADORES SOCIODEMOGRAFICOS`,
-      CANTIDAD,
-      `%`
+      Indicador,
+      Cantidad,
+      Porcentaje
     )
 
   # ------------------------------------------------------------
@@ -172,18 +246,27 @@ ehe_demografico <- function(base) {
   # ------------------------------------------------------------
 
   jefe_p <- datos |>
-    dplyr::filter(vi3 == 1) |>
+    dplyr::filter(
+      .data[[parentesco_var]] == 1
+    ) |>
     dplyr::summarise(
-      CANTIDAD = round(sum(ponduni, na.rm = TRUE), 0)
+      Cantidad = as.integer(round(sum(ponduni, na.rm = TRUE), 0))
     ) |>
     dplyr::mutate(
-      `%` = round(CANTIDAD / sum(datos$ponduni, na.rm = TRUE) * 100, 1),
-      `INDICADORES SOCIODEMOGRAFICOS` = "Jefes del hogar"
+      Porcentaje = round(
+        Cantidad /
+          sum(datos$ponduni, na.rm = TRUE) *
+          100,
+        1
+      ),
+      Indicador =
+        "Jefes del hogar",
+      Cantidad = format(Cantidad, big.mark = ".", decimal.mark = ",", scientific = FALSE)
     ) |>
     dplyr::select(
-      `INDICADORES SOCIODEMOGRAFICOS`,
-      CANTIDAD,
-      `%`
+      Indicador,
+      Cantidad,
+      Porcentaje
     )
 
   # ------------------------------------------------------------
@@ -198,14 +281,15 @@ ehe_demografico <- function(base) {
     jefe_p
   )
 }
+
+
 utils::globalVariables(
   c(
     "ponduni",
-    "vi3",
-    "vi4",
     "sexoedad",
-    "CANTIDAD",
-    "%",
-    "INDICADORES SOCIODEMOGRAFICOS"
+    "etarios",
+    "Cantidad",
+    "Porcentaje",
+    "Indicador"
   )
 )

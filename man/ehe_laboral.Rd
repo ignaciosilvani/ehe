@@ -7,56 +7,28 @@
 ehe_laboral(base, weights = "ponduni")
 }
 \arguments{
-\item{base}{Base de datos individual de la EHE.}
+\item{base}{Base de datos EHE.}
 
-\item{weights}{Nombre de la variable que contiene el factor de
-expansion de la encuesta. Por defecto, \code{"ponduni"}.}
+\item{weights}{Variable de ponderacion. Por defecto, \code{"ponduni"}.}
 }
 \value{
-Un tibble con los principales indicadores del mercado laboral,
-incluyendo tasas de actividad y subocupacion.
+Un tibble con las columnas:
+\code{indicador}, \code{desagregacion}, \code{categoria} y \code{porcentaje}.
 }
 \description{
 Calcula tasas de actividad, empleo, desocupacion y subocupacion
-para la poblacion de 14 anos y mas, utilizando el factor de
-expansion correspondiente.
+para la poblacion de 14 anos y mas.
 }
 \details{
-Las tasas se presentan para:
+Compatible con las distintas estructuras historicas de la EHE:
 \itemize{
-\item poblacion de 14 anos y mas;
-\item sexo;
-\item grupos de edad;
-\item sexo y grupo de edad;
-\item jefes/as de hogar.
+\item 2010 a 2013
+\item 2014
+\item 2015 en adelante
 }
-
-La funcion calcula los siguientes indicadores:
-
-\itemize{
-\item Tasa de actividad de la poblacion de 14 anos y mas.
-\item Tasa de actividad por sexo.
-\item Tasa de actividad por grupo de edad.
-\item Tasa de actividad por sexo y grupo de edad.
-\item Tasa de actividad de los jefes de hogar.
-\item Tasa de subocupacion.
-}
-
-Los grupos etarios utilizados son:
-
-\itemize{
-\item De 14 a 29 anos.
-\item De 30 a 64 anos.
-\item 65 anos y mas.
-}
-
-Aunque el tercer grupo se construye para los calculos internos,
-no se presenta en los indicadores de actividad por grupo de edad
-ni en los indicadores combinados de sexo y edad.
 }
 \examples{
 \dontrun{
-# Obtener una base individual de la EHE
 base <- get_ehe(
   encuesta = "EHE-M",
   anio = 2024,
@@ -64,12 +36,9 @@ base <- get_ehe(
   localidad = "Alberti"
 )
 
-# Calcular los indicadores del mercado laboral
-ehe_laboral(
-  base = base,
-  weights = "ponduni"
-)
-}
+resultado <- ehe_laboral(base)
 
+resultado
+}
 
 }

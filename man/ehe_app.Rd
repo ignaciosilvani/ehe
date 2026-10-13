@@ -2,7 +2,7 @@
 % Please edit documentation in R/ehe_app.R
 \name{ehe_app}
 \alias{ehe_app}
-\title{Aplicacion Shiny para explorar indicadores laborales de la EHE}
+\title{Aplicacion Shiny para explorar indicadores de la EHE}
 \usage{
 ehe_app()
 }
@@ -10,9 +10,12 @@ ehe_app()
 No devuelve un objeto. Ejecuta una aplicacion Shiny.
 }
 \description{
-Abre una aplicacion Shiny que permite seleccionar un municipio
-y un anio y consultar los indicadores laborales calculados
-mediante \code{\link[=ehe_laboral]{ehe_laboral()}}.
+Abre una aplicacion Shiny que permite seleccionar un municipio,
+un anio y el tipo de indicadores a consultar.
+}
+\details{
+Los indicadores laborales se calculan mediante \code{\link[=ehe_laboral]{ehe_laboral()}}
+y los indicadores sociodemograficos mediante \code{\link[=ehe_demografico]{ehe_demografico()}}.
 }
 \examples{
 if (interactive()) {
